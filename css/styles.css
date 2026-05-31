@@ -898,3 +898,159 @@ input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0; }
   /* Disable scroll-line animation */
   .hero__scroll-line::after { animation: none !important; }
 }
+
+/* ─────────────────────────────────────────────
+   DEMO BANNER
+───────────────────────────────────────────── */
+:root { --banner-h: 36px; }
+
+.demo-banner {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--banner-h);
+  z-index: 199;
+  background: var(--color-text-dark);
+  color: var(--color-text-light);
+  font-family: var(--font-caption);
+  font-size: 0.68rem;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 0 var(--spacing-sm);
+}
+.demo-banner__label {
+  opacity: 0.45;
+  white-space: nowrap;
+}
+.demo-banner__cta {
+  color: var(--color-bg-cream);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-primary);
+  padding-bottom: 1px;
+  white-space: nowrap;
+  transition: color 200ms var(--ease-out), border-color 200ms var(--ease-out);
+}
+.demo-banner__cta:hover {
+  color: var(--color-primary);
+}
+
+/* Empujar nav debajo del banner */
+.nav { top: var(--banner-h); }
+
+@media (max-width: 500px) {
+  .demo-banner__label { display: none; }
+}
+
+/* ─────────────────────────────────────────────
+   WHATSAPP FAB
+───────────────────────────────────────────── */
+.wa-fab {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 150;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #25D366;
+  color: #fff;
+  font-family: var(--font-caption);
+  font-size: 0.72rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 13px 22px 13px 17px;
+  border-radius: 50px;
+  box-shadow: 0 4px 18px rgba(37, 211, 102, 0.38);
+  transition: transform 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
+}
+.wa-fab:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(37, 211, 102, 0.48);
+}
+.wa-fab svg { flex-shrink: 0; }
+
+@media (max-width: 500px) {
+  .wa-fab { bottom: 20px; right: 20px; padding: 13px 16px; }
+  .wa-fab__text { display: none; }
+}
+
+/* ─────────────────────────────────────────────
+   DEMO BANNER
+───────────────────────────────────────────── */
+:root { --banner-h: 36px; }
+
+.demo-banner {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--banner-h);
+  z-index: 199;
+  background: var(--color-text-dark);
+  color: var(--color-text-light);
+  font-family: var(--font-caption);
+  font-size: 0.68rem;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 0 var(--spacing-sm);
+}
+.demo-banner__label {
+  opacity: 0.45;
+  white-space: nowrap;
+}
+.demo-banner__cta {
+  color: var(--color-bg-cream);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-primary);
+  padding-bottom: 1px;
+  white-space: nowrap;
+  transition: color 200ms var(--ease-out), border-color 200ms var(--ease-out);
+}
+.demo-banner__cta:hover { color: var(--color-primary); }
+
+/* Empujar nav debajo del banner */
+.nav { top: var(--banner-h); }
+
+@media (max-width: 500px) {
+  .demo-banner__label { display: none; }
+}
+
+/* ─────────────────────────────────────────────
+   WHATSAPP FAB
+───────────────────────────────────────────── */
+.wa-fab {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 150;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #25D366;
+  color: #fff;
+  font-family: var(--font-caption);
+  font-size: 0.72rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 13px 22px 13px 17px;
+  border-radius: 50px;
+  box-shadow: 0 4px 18px rgba(37, 211, 102, 0.38);
+  transition: transform 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
+}
+.wa-fab:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(37, 211, 102, 0.48);
+}
+.wa-fab svg { flex-shrink: 0; }
+
+@media (max-width: 500px) {
+  .wa-fab { bottom: 20px; right: 20px; padding: 13px 16px; }
+  .wa-fab__text { display: none; }
+}

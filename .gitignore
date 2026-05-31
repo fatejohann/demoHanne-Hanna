@@ -1,0 +1,15 @@
+# Claude
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE / editors
+.vscode/
+.idea/
+*.sublime-workspace
+
+# Node (por si acaso)
+node_modules/

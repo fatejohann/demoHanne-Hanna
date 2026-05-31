@@ -160,8 +160,26 @@
       });
       if (!valid) return;
 
+      /* Build WhatsApp message with the reservation data */
+      var name   = document.getElementById('r-name').value.trim();
+      var date   = document.getElementById('r-date').value;
+      var guests = document.getElementById('r-guests').value;
+      var note   = document.getElementById('r-msg').value.trim();
+
+      var msgText =
+        'Hola, quisiera hacer una reserva en Hanne Hanna.\n' +
+        'Nombre: ' + name + '\n' +
+        'Fecha: ' + date + '\n' +
+        'Personas: ' + guests +
+        (note ? '\nNota: ' + note : '');
+
+      window.open(
+        'https://wa.me/50361673417?text=' + encodeURIComponent(msgText),
+        '_blank'
+      );
+
       var btn = resForm.querySelector('.res-submit');
-      btn.textContent = 'Enviando...';
+      btn.textContent = 'Abriendo WhatsApp…';
       btn.disabled = true;
 
       setTimeout(function () {
@@ -174,7 +192,7 @@
             resSuccess.style.opacity = '1';
           }, 40);
         }, 460);
-      }, 1100);
+      }, 800);
     });
   }
 
