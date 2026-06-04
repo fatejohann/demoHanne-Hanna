@@ -9,11 +9,12 @@
   --color-accent-rose:  #DDB8A8;
   --color-text-dark:    #1A1410;
   --color-text-light:   #F4ECD8;
+  --color-error:        oklch(52% 0.24 22);
 
   --font-display:  'Bebas Neue', sans-serif;
-  --font-heading:  'Playfair Display', serif;
+  --font-heading:  'Bodoni Moda', serif;
   --font-body:     'EB Garamond', serif;
-  --font-caption:  'DM Mono', monospace;
+  --font-caption:  'Barlow Condensed', sans-serif;
 
   --spacing-xs:  8px;
   --spacing-sm:  16px;
@@ -99,6 +100,7 @@ a { color: inherit; }
 .nav__links a {
   font-family: var(--font-caption);
   font-size: 0.68rem;
+  font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: rgba(244,236,216,0.85);
@@ -111,6 +113,7 @@ a { color: inherit; }
 .nav__cta {
   font-family: var(--font-caption);
   font-size: 0.68rem;
+  font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--color-primary);
@@ -180,10 +183,11 @@ a { color: inherit; }
 .drawer a {
   font-family: var(--font-heading);
   font-style: italic;
+  font-optical-sizing: auto;
   font-size: clamp(2.2rem, 5vw, 3.5rem);
   color: var(--color-text-dark);
   text-decoration: none;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
   transition: color 200ms ease;
 }
 .drawer a:hover { color: var(--color-primary); }
@@ -231,6 +235,7 @@ a { color: inherit; }
 .hero__eyebrow {
   font-family: var(--font-caption);
   font-size: 0.68rem;
+  font-weight: 500;
   letter-spacing: 0.38em;
   text-transform: uppercase;
   color: var(--color-accent-rose);
@@ -252,10 +257,11 @@ a { color: inherit; }
 .hero__tagline {
   font-family: var(--font-heading);
   font-style: italic;
+  font-optical-sizing: auto;
   font-size: clamp(1.1rem, 2.4vw, 1.75rem);
   color: rgba(244,236,216,0.88);
   max-width: 440px;
-  line-height: 1.45;
+  line-height: 1.5;
   opacity: 0;
 }
 
@@ -319,6 +325,7 @@ a { color: inherit; }
 .section-eyebrow {
   font-family: var(--font-caption);
   font-size: 0.68rem;
+  font-weight: 500;
   letter-spacing: 0.38em;
   text-transform: uppercase;
   color: var(--color-primary);
@@ -379,6 +386,7 @@ a { color: inherit; }
 .menu-section__eyebrow {
   font-family: var(--font-caption);
   font-size: 0.68rem;
+  font-weight: 500;
   letter-spacing: 0.38em;
   text-transform: uppercase;
   color: var(--color-accent-rose);
@@ -416,6 +424,7 @@ a { color: inherit; }
 .menu-cat__name {
   font-family: var(--font-heading);
   font-style: italic;
+  font-optical-sizing: auto;
   font-size: clamp(1.3rem, 2vw, 1.65rem);
   color: var(--color-text-light);
   letter-spacing: -0.01em;
@@ -434,6 +443,7 @@ a { color: inherit; }
 .menu-item__name {
   font-family: var(--font-heading);
   font-style: italic;
+  font-optical-sizing: auto;
   font-size: 1.05rem;
   color: var(--color-text-light);
   display: block;
@@ -449,6 +459,8 @@ a { color: inherit; }
 .menu-item__price {
   font-family: var(--font-caption);
   font-size: 0.72rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
   color: var(--color-accent-rose);
   white-space: nowrap;
   flex-shrink: 0;
@@ -486,6 +498,7 @@ a { color: inherit; }
 .gallery__eyebrow {
   font-family: var(--font-caption);
   font-size: 0.68rem;
+  font-weight: 500;
   letter-spacing: 0.38em;
   text-transform: uppercase;
   color: var(--color-accent-rose);
@@ -565,6 +578,7 @@ a { color: inherit; }
 .reservations__eyebrow {
   font-family: var(--font-caption);
   font-size: 0.68rem;
+  font-weight: 500;
   letter-spacing: 0.38em;
   text-transform: uppercase;
   color: var(--color-primary);
@@ -602,6 +616,28 @@ a { color: inherit; }
 }
 .res-field--full { grid-column: 1 / -1; }
 .res-field:focus-within { border-bottom-color: var(--color-primary); }
+/* Error overrides focus — both selectors needed for equal specificity */
+.res-field.has-error,
+.res-field.has-error:focus-within { border-bottom-color: var(--color-error); }
+
+.res-error {
+  font-family: var(--font-caption);
+  font-size: 0.58rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-error);
+  display: block;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 250ms var(--ease-out), opacity 250ms var(--ease-out), padding-top 250ms var(--ease-out);
+}
+.res-field.has-error .res-error {
+  max-height: 2rem;
+  opacity: 1;
+  padding-top: 4px;
+}
 
 .res-label {
   font-family: var(--font-caption);
@@ -734,6 +770,7 @@ input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0; }
 .footer__hours li {
   font-family: var(--font-caption);
   font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
   color: rgba(244,236,216,0.72);
   display: flex;
   justify-content: space-between;
@@ -812,6 +849,17 @@ input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0; }
   position: absolute; width: 1px; height: 1px;
   padding: 0; margin: -1px; overflow: hidden;
   clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+
+/* Focus ring — keyboard navigation only */
+*:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+/* Inputs use border-bottom for focus — suppress the outline there */
+.res-input:focus-visible,
+.res-textarea:focus-visible {
+  outline: none;
 }
 
 /* ─────────────────────────────────────────────
@@ -978,79 +1026,3 @@ input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0; }
   .wa-fab__text { display: none; }
 }
 
-/* ─────────────────────────────────────────────
-   DEMO BANNER
-───────────────────────────────────────────── */
-:root { --banner-h: 36px; }
-
-.demo-banner {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  height: var(--banner-h);
-  z-index: 199;
-  background: var(--color-text-dark);
-  color: var(--color-text-light);
-  font-family: var(--font-caption);
-  font-size: 0.68rem;
-  letter-spacing: 0.10em;
-  text-transform: uppercase;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 24px;
-  padding: 0 var(--spacing-sm);
-}
-.demo-banner__label {
-  opacity: 0.45;
-  white-space: nowrap;
-}
-.demo-banner__cta {
-  color: var(--color-bg-cream);
-  text-decoration: none;
-  border-bottom: 1px solid var(--color-primary);
-  padding-bottom: 1px;
-  white-space: nowrap;
-  transition: color 200ms var(--ease-out), border-color 200ms var(--ease-out);
-}
-.demo-banner__cta:hover { color: var(--color-primary); }
-
-/* Empujar nav debajo del banner */
-.nav { top: var(--banner-h); }
-
-@media (max-width: 500px) {
-  .demo-banner__label { display: none; }
-}
-
-/* ─────────────────────────────────────────────
-   WHATSAPP FAB
-───────────────────────────────────────────── */
-.wa-fab {
-  position: fixed;
-  bottom: 28px;
-  right: 28px;
-  z-index: 150;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: #25D366;
-  color: #fff;
-  font-family: var(--font-caption);
-  font-size: 0.72rem;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  text-decoration: none;
-  padding: 13px 22px 13px 17px;
-  border-radius: 50px;
-  box-shadow: 0 4px 18px rgba(37, 211, 102, 0.38);
-  transition: transform 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
-}
-.wa-fab:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 28px rgba(37, 211, 102, 0.48);
-}
-.wa-fab svg { flex-shrink: 0; }
-
-@media (max-width: 500px) {
-  .wa-fab { bottom: 20px; right: 20px; padding: 13px 16px; }
-  .wa-fab__text { display: none; }
-}
