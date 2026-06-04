@@ -11,6 +11,7 @@
   const heroEyebrow = document.querySelector('.hero__eyebrow');
   const heroTitle   = document.querySelector('.hero__title');
   const heroTagline = document.querySelector('.hero__tagline');
+  const heroCta     = document.querySelector('.hero__cta');
   const heroScroll  = document.querySelector('.hero__scroll');
 
   /* Emil rule ease-custom-curves: strong ease-out for all reveals */
@@ -27,15 +28,15 @@
 
   if (!reduced) {
     window.addEventListener('DOMContentLoaded', function () {
-      /* Staggered hero entrance — marketing exception allows longer durations */
-      fadeIn(heroTitle,   60,  900);   /* title leads — biggest impact first */
-      fadeIn(heroEyebrow, 220, 550);   /* eyebrow follows title */
-      fadeIn(heroTagline, 380, 650);   /* tagline last in content */
-      fadeIn(heroScroll,  1100, 500);  /* scroll indicator after content settles */
+      fadeIn(heroTitle,   60,  550);
+      fadeIn(heroEyebrow, 200, 380);
+      fadeIn(heroTagline, 320, 400);
+      fadeIn(heroCta,     500, 350);
+      fadeIn(heroScroll,  800, 300);
     });
   } else {
     /* Reduced motion: fade to visible gently, no transforms */
-    [heroEyebrow, heroTitle, heroTagline, heroScroll].forEach(function (el) {
+    [heroEyebrow, heroTitle, heroTagline, heroCta, heroScroll].forEach(function (el) {
       if (el) {
         el.style.transition = 'opacity 400ms ease';
         el.style.opacity = '1';
@@ -50,9 +51,14 @@
   var heroH      = heroEl ? heroEl.offsetHeight : 0;
 
   if (!reduced && heroBg) {
+    var parallaxTicking = false;
     window.addEventListener('scroll', function () {
-      if (window.scrollY < heroH) {
-        heroBg.style.transform = 'translateY(' + (window.scrollY * 0.14) + 'px)';
+      if (!parallaxTicking && window.scrollY < heroH) {
+        parallaxTicking = true;
+        requestAnimationFrame(function () {
+          heroBg.style.transform = 'translateY(' + (window.scrollY * 0.14) + 'px)';
+          parallaxTicking = false;
+        });
       }
     }, { passive: true });
   }
@@ -68,15 +74,39 @@
   var drawer      = document.getElementById('drawer');
   var drawerClose = document.getElementById('drawerClose');
 
+  function getFocusables(el) {
+    return Array.from(el.querySelectorAll(
+      'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    ));
+  }
+
+  function trapFocus(e) {
+    var focusables = getFocusables(drawer);
+    var first = focusables[0];
+    var last  = focusables[focusables.length - 1];
+    if (e.key === 'Escape') { closeDrawer(); return; }
+    if (e.key !== 'Tab') return;
+    if (e.shiftKey) {
+      if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+    } else {
+      if (document.activeElement === last)  { e.preventDefault(); first.focus(); }
+    }
+  }
+
   function openDrawer() {
     drawer.classList.add('is-open');
     burger.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
+    drawer.addEventListener('keydown', trapFocus);
+    var focusables = getFocusables(drawer);
+    if (focusables.length) { setTimeout(function () { focusables[0].focus(); }, 50); }
   }
   function closeDrawer() {
     drawer.classList.remove('is-open');
     burger.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
+    drawer.removeEventListener('keydown', trapFocus);
+    burger.focus();
   }
 
   burger.addEventListener('click', openDrawer);
@@ -129,6 +159,11 @@
     observe('.reservations__headline', 100);
     observe('.reservations__sub',      200);
     observe('.res-form',               300);
+
+    /* Micro-CTAs */
+    observe('.identity .micro-cta',       400);
+    observe('.menu__cta',                 100);
+    observe('.gallery__cta-row .micro-cta', 200);
   }
 
   /* ── FLOATING LABELS ────────────────────── */
@@ -147,18 +182,72 @@
   var resForm    = document.getElementById('resForm');
   var resSuccess = document.getElementById('resSuccess');
 
+  var FIELD_ERRORS = {
+    'r-name':   'Por favor, ingresa tu nombre.',
+    'r-email':  'Ingresa un correo electrónico válido.',
+    'r-date':   'Selecciona una fecha futura.',
+    'r-guests': 'Indica el número de personas (1–12).'
+  };
+
+  function isFieldValid(inp) {
+    if (!inp.value.trim()) return false;
+    if (inp.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inp.value.trim())) return false;
+    if (inp.type === 'date') {
+      var today = new Date().toISOString().split('T')[0];
+      if (inp.value < today) return false;
+    }
+    if (inp.type === 'number') {
+      var n = parseInt(inp.value, 10);
+      if (isNaN(n) || n < 1 || n > 12) return false;
+    }
+    return true;
+  }
+
+  function setFieldError(inp) {
+    var field = inp.closest('.res-field');
+    if (!field) return;
+    field.classList.add('has-error');
+    inp.setAttribute('aria-invalid', 'true');
+    var errEl = document.getElementById(inp.id + '-error');
+    if (errEl && FIELD_ERRORS[inp.id]) errEl.textContent = FIELD_ERRORS[inp.id];
+  }
+
+  function clearFieldError(inp) {
+    var field = inp.closest('.res-field');
+    if (!field) return;
+    field.classList.remove('has-error');
+    inp.setAttribute('aria-invalid', 'false');
+    var errEl = document.getElementById(inp.id + '-error');
+    if (errEl) errEl.textContent = '';
+  }
+
   if (resForm) {
+    /* Set date minimum to today */
+    var dateInp = document.getElementById('r-date');
+    if (dateInp) dateInp.min = new Date().toISOString().split('T')[0];
+
+    /* Clear error when field becomes valid */
+    resForm.querySelectorAll('.res-input, .res-textarea').forEach(function (inp) {
+      inp.addEventListener('input', function () {
+        if (isFieldValid(this)) clearFieldError(this);
+      });
+    });
+
     resForm.addEventListener('submit', function (e) {
       e.preventDefault();
 
       var valid = true;
       resForm.querySelectorAll('[required]').forEach(function (inp) {
-        if (!inp.value.trim()) {
+        if (!isFieldValid(inp)) {
           valid = false;
-          inp.closest('.res-field').style.borderBottomColor = 'var(--color-primary)';
+          setFieldError(inp);
         }
       });
-      if (!valid) return;
+      if (!valid) {
+        var firstInvalid = resForm.querySelector('[aria-invalid="true"]');
+        if (firstInvalid) firstInvalid.focus();
+        return;
+      }
 
       /* Build WhatsApp message with the reservation data */
       var name   = document.getElementById('r-name').value.trim();
@@ -204,7 +293,7 @@
       var target = document.querySelector(id);
       if (target) {
         e.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        target.scrollIntoView({ behavior: reduced ? 'instant' : 'smooth', block: 'start' });
       }
     });
   });
